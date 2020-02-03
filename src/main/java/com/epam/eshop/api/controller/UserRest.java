@@ -1,7 +1,6 @@
 package com.epam.eshop.api.controller;
 
 import com.epam.eshop.api.controller.constant.RestParameters;
-import com.epam.eshop.api.converter.ExtendedConversionService;
 import com.epam.eshop.domain.UserEntity;
 import com.epam.eshop.domain.UserRole;
 import com.epam.eshop.dto.ApiResponseDataDto;
@@ -32,16 +31,17 @@ import javax.validation.constraints.Pattern;
 @Validated
 public class UserRest {
 
-    @Autowired
     private UserService <UserEntity, String> userService;
 
     @Autowired
-    private ExtendedConversionService conversionService;
+    public UserRest(UserService <UserEntity, String> userService){
+        this.userService = userService;
+    }
 
     @PostMapping(value = "/users")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ApiResponseDataDto<UserEntity> create(@RequestBody @Valid CreateUserDto createUserDto) {
-        UserEntity convertUser = conversionService.convert(createUserDto, UserEntity.class);
+    public ApiResponseDataDto create(@RequestBody @Valid CreateUserDto createUserDto) {
+        UserEntity convertUser = new UserEntity(createUserDto, UserEntity.class);
         return new ApiResponseDataDto<>(userService
                 .save(convertUser)
                 .getId());
@@ -50,12 +50,11 @@ public class UserRest {
     @GetMapping(value = "/users")
     public ApiResponseDataDto<Page<UserDto>> findUsers(@RequestParam(value = RestParameters.FULL_NAME_OR_EMAIL, required = false)
                                                        @Pattern(regexp = RegexConstants.SEARCH_QUERY_FOR_USERS_MAX_35_OR_EMPTY, message = ErrorMassage.USER_NAME) String fullNameOrEmail,
-                                                       @Pattern(regexp = RegexConstants.USER_ROLE_OR_EMPTY, message = ErrorMassage.USER_ROLE) String status,
                                                        @RequestParam(value = RestParameters.USER_ROLE, required = false) @EnumValidator(enumClazz = UserRole.class) String role,
                                                        @SortDefault(sort = "fullName", direction = Sort.Direction.ASC) Pageable pageable) {
 
         Page<UserEntity> userEntityPage = userService.findUsers(fullNameOrEmail, role, pageable);
-        Page<UserDto> userDtoList = userEntityPage.map(userEntity -> conversionService.convert(userEntity, UserDto.class));
+        Page<UserDto> userDtoList = userEntityPage.map(userEntity -> new UserDto(userEntity, UserDto.class));
         return new ApiResponseDataDto<>(userDtoList);
     }
 }

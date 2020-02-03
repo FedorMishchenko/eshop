@@ -1,5 +1,6 @@
 package com.epam.eshop.domain;
 
+import com.epam.eshop.dto.CreateUserDto;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -11,6 +12,12 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 @Data
 public class UserEntity extends AbstractEntity {
+
+    public UserEntity() {
+    }
+
+    public UserEntity(CreateUserDto createUserDto, Class<UserEntity> userEntityClass) {
+    }
 
     @Column(name = "email")
     private String email;
@@ -29,4 +36,5 @@ public class UserEntity extends AbstractEntity {
 
     @Column(name = "role")
     private UserRole role;
+
 }
