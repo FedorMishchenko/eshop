@@ -2,8 +2,8 @@ package com.epam.eshop.domain;
 
 public enum UserRole {
 
-    ADMIN(0, "Admin"),
-    CLIENT(1, "Client");
+    ADMIN(1, "Admin"),
+    CLIENT(2, "Client");
 
     private int id;
     private String name;
@@ -11,5 +11,13 @@ public enum UserRole {
     UserRole(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
     }
 }
