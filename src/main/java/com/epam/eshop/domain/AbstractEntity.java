@@ -13,4 +13,6 @@ public abstract class AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    public abstract UserEntity getId();
 }
