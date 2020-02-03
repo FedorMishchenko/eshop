@@ -4,8 +4,8 @@ import com.epam.eshop.domain.UserEntity;
 import com.epam.eshop.repository.UserRepository;
 import com.epam.eshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public class UserServiceImpl implements UserService<UserEntity,String> {
 
@@ -18,12 +18,12 @@ public class UserServiceImpl implements UserService<UserEntity,String> {
     }
 
     @Override
-    public void save(UserEntity entity) {
-
+    public UserEntity save(UserEntity entity) {
+        return null;
     }
 
     @Override
-    public List<UserEntity> getAll() {
+    public Page<UserEntity> findUsers(String fullName, String role, Pageable pageable) {
         return null;
     }
 
